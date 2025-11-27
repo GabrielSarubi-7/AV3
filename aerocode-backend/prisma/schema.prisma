@@ -1,0 +1,69 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Aeronave {
+  id         Int      @id @default(autoincrement())
+  codigo     String   @unique
+  modelo     String
+  tipo       String
+  capacidade Int?
+  alcance    Int?
+  pecas      Peca[]   @relation("PecasDaAeronave")
+  etapas     Etapa[]  @relation("EtapasDaAeronave")
+  testes     Teste[]  @relation("TestesDaAeronave")
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @updatedAt @db.Timestamp(6)
+}
+
+model Peca {
+  id          Int      @id @default(autoincrement())
+  aeronave    Aeronave @relation("PecasDaAeronave", fields: [aeronaveId], references: [id])
+  aeronaveId  Int
+  nome        String
+  tipo        String?
+  fornecedor  String?
+  status      String?
+  created_at  DateTime @default(now()) @db.Timestamp(6)
+  updated_at  DateTime @updatedAt @db.Timestamp(6)
+}
+
+model Etapa {
+  id           Int      @id @default(autoincrement())
+  aeronave     Aeronave @relation("EtapasDaAeronave", fields: [aeronaveId], references: [id])
+  aeronaveId   Int
+  nome         String
+  prazo_dias   Int?
+  status       String?
+  responsaveis String?
+  created_at   DateTime @default(now()) @db.Timestamp(6)
+  updated_at   DateTime @updatedAt @db.Timestamp(6)
+}
+
+model Funcionario {
+  id         Int      @id @default(autoincrement())
+  nome       String
+  telefone   String?
+  endereco   String?
+  usuario    String   @unique
+  senha      String
+  permissao  String?
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @updatedAt @db.Timestamp(6)
+}
+
+model Teste {
+  id          Int      @id @default(autoincrement())
+  aeronave    Aeronave @relation("TestesDaAeronave", fields: [aeronaveId], references: [id])
+  aeronaveId  Int
+  tipo        String
+  resultado   String
+  observacoes String?
+  created_at  DateTime @default(now()) @db.Timestamp(6)
+  updated_at  DateTime @updatedAt @db.Timestamp(6)
+}
