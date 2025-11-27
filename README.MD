@@ -20,8 +20,19 @@ Sistema **Full Stack** para gestão de **aeronaves, peças, etapas e testes**, c
 git clone https://github.com/GabrielSarubi-7/AV3
 cd AV3
 ```
+---
 
-### Backend
+## Banco de Dados (MySQL)
+
+Antes de rodar o backend, crie o banco de dados no MySQL:
+
+1. Abra seu cliente MySQL (Workbench, DBeaver, terminal etc.).
+2. Execute:
+
+```sql
+CREATE DATABASE aerocode;
+```
+## Backend
 
 ```bash
 cd backend
@@ -54,7 +65,7 @@ Inicie o servidor:
 npm run dev
 ```
 
-### Frontend
+## Frontend
 
 ```bash
 cd ../frontend

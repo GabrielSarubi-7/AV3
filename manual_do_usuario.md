@@ -15,10 +15,22 @@ Antes de iniciar, certifique-se de ter instalado:
 ✔ Git  
 
 ---
+# 2. Criar o Banco de Dados (MySQL)
 
-# 2. Instalação do Projeto
+### 1️⃣ Abra o MySQL
+### 2️⃣ Crie o banco:
 
-## 2.1. Clonar o repositório
+```sql
+CREATE DATABASE aerocode;
+```
+
+⚠️ *Esse passo é obrigatório!*
+
+---
+
+# 3. Instalação do Projeto
+
+## 3.1. Clonar o repositório
 ```bash
 git clone https://github.com/GabrielSarubi-7/AV3
 cd AV3
@@ -26,19 +38,19 @@ cd AV3
 
 ---
 
-# 3. Configurando o Backend
+# 4. Configurando o Backend
 
 Entre na pasta:
 ```bash
 cd backend
 ```
 
-## 3.1. Instalar dependências
+## 4.1. Instalar dependências
 ```bash
 npm install
 ```
 
-## 3.2. Criar o arquivo .env
+## 4.2. Criar o arquivo .env
 Crie `backend/.env` com:
 
 ```
@@ -47,12 +59,12 @@ PORT=4000
 JWT_SECRET="senhasupersecreta"
 ```
 
-## 3.3. Aplicar migrações
+## 4.3. Aplicar migrações
 ```bash
 npx prisma migrate dev --name init
 ```
 
-## 3.4. Criar usuário ADMIN padrão
+## 4.4. Criar usuário ADMIN padrão
 ```bash
 node scripts/createAdmin.js
 ```
@@ -61,33 +73,33 @@ Usuário criado:
 - admin / admin123  
 - Permissão: ADMIN
 
-## 3.5. Iniciar o backend
+## 4.5. Iniciar o backend
 ```bash
 npm run dev
 ```
 
 ---
 
-# 4. Configurando o Frontend
+# 5. Configurando o Frontend
 
-## 4.1. Entrar na pasta
+## 5.1. Entrar na pasta
 ```bash
 cd ../frontend
 ```
 
-## 4.2. Instalar dependências
+## 5.2. Instalar dependências
 ```bash
 npm install
 ```
 
-## 4.3. Criar arquivo .env
+## 5.3. Criar arquivo .env
 Crie `frontend/.env`:
 
 ```
 VITE_API_URL="http://localhost:4000/api"
 ```
 
-## 4.4. Rodar o frontend
+## 5.4. Rodar o frontend
 ```bash
 npm run dev
 ```
@@ -96,7 +108,7 @@ Acesse: http://localhost:5173
 
 ---
 
-# 5. Login
+# 6. Login
 
 Use o administrador padrão:
 
@@ -107,7 +119,7 @@ Use o administrador padrão:
 
 ---
 
-# 6. Permissões do Sistema
+# 7. Permissões do Sistema
 
 ## ADMIN
 ✔ Acesso total  
@@ -128,7 +140,7 @@ Use o administrador padrão:
 
 ---
 
-# 7. Funcionalidades
+# 8. Funcionalidades
 
 - CRUD de aeronaves  
 - CRUD de peças  
@@ -140,7 +152,7 @@ Use o administrador padrão:
 
 ---
 
-# 8. Travas Visuais
+# 9. Travas Visuais
 
 - Botões somem quando não permitidos  
 - Botões ficam desabilitados caso o usuário não tenha permissão  
@@ -148,7 +160,7 @@ Use o administrador padrão:
 
 ---
 
-# 9. Testando o Sistema
+# 10. Testando o Sistema
 
 1. Logar como **admin**  
 2. Criar um engenheiro e um operador  
@@ -157,7 +169,7 @@ Use o administrador padrão:
 
 ---
 
-# 10. Conclusão
+# 11. Conclusão
 
 Se tudo foi seguido:
 
@@ -169,5 +181,5 @@ Se tudo foi seguido:
 ✔ Relatórios funcionando  
 
 ---
-###### (este documento foi gerado com auxilio de inteligencia artificial)
+###### este documento foi gerado com auxilio de inteligencia artificial
 
