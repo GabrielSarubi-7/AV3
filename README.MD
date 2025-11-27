@@ -55,10 +55,10 @@ npm install
 ### 3. Criar arquivo `.env`
 
 Crie um arquivo chamado `.env` dentro da pasta `aerocode-backend` com o conteúdo:
-
+```
 DATABASE_URL="mysql://user:senha@localhost:3306/aerocode"
 PORT=4000
-
+```
 Substitua `user` e `senha` pelo seu usuário e senha do MySQL.
 
 ### 4. Rodar as migrações do Prisma
