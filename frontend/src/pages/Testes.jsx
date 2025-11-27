@@ -1,4 +1,3 @@
-// Final/src/pages/Testes.jsx
 import { useEffect, useState } from "react";
 import Modal from "../components/Modal.jsx";
 import { getTestes, createTeste, deleteTeste } from "../services/testesService";

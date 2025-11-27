@@ -1,4 +1,3 @@
-// Final/src/pages/Dashboard.jsx
 import { useEffect, useState } from "react";
 import {
   getAeronaves
@@ -17,7 +16,6 @@ function Card({ title, value, small }) {
   );
 }
 
-/* simple svg bar chart - expects data: [{label, value}] */
 function BarChart({ data, width = 600, height = 140 }) {
   if (!data || data.length === 0) return null;
   const max = Math.max(...data.map(d => d.value), 1);
@@ -75,7 +73,7 @@ export default function Dashboard() {
 
   useEffect(() => { load(); }, []);
 
-  // KPIs
+  
   const totalAeronaves = aeronaves.length;
   const totalPecas = pecas.length;
   const totalEtapas = etapas.length;
@@ -88,7 +86,7 @@ export default function Dashboard() {
   const testesAprovados = testes.filter(t => (t.resultado || "").toUpperCase() === "APROVADO").length;
   const taxaAprovacao = totalTestes === 0 ? 0 : Math.round((testesAprovados / totalTestes) * 100);
 
-  // breakdown for chart: peças por status (best-effort)
+  
   const pecasStatusCounts = {};
   pecas.forEach(p => {
     const s = (p.status || "DESCONHECIDO").toUpperCase();
@@ -96,7 +94,7 @@ export default function Dashboard() {
   });
   const pecasChartData = Object.keys(pecasStatusCounts).map(k => ({ label: k.slice(0,8), value: pecasStatusCounts[k] }));
 
-  // pequenas métricas para cards
+  
   const employees = funcionarios.length;
 
   return (

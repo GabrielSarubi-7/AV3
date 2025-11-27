@@ -1,4 +1,3 @@
-// Final/src/pages/AeronaveDetalhe.jsx
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getAeronave } from "../services/aeronavesService";
@@ -19,7 +18,7 @@ export default function AeronaveDetalhe(){
       } catch (err) {
         console.error("[AeronaveDetalhe] Erro ao carregar detalhes:", err);
 
-        // detalhar erro do axios (se for axios)
+        
         if (err?.response) {
           console.error("Resposta do servidor:", err.response.status, err.response.data);
           alert(`Erro ${err.response.status}: ${JSON.stringify(err.response.data)}`);

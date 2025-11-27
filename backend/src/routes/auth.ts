@@ -6,7 +6,7 @@ import prisma from "../prismaClient";
 
 const router = Router();
 const JWT_SECRET = process.env.JWT_SECRET || "aerocode-secret";
-const JWT_EXPIRES = "8h"; // ajuste se quiser
+
 
 // login
 router.post("/login", async (req, res) => {
@@ -23,10 +23,8 @@ router.post("/login", async (req, res) => {
         const token = jwt.sign(
             { sub: user.id, usuario: user.usuario, permissao: user.permissao },
             JWT_SECRET,
-            { expiresIn: JWT_EXPIRES }
         );
 
-        // não envie a senha de volta
         const { senha: _s, ...userSafe } = user;
         return res.json({ token, user: userSafe });
     } catch (err) {

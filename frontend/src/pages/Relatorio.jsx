@@ -1,4 +1,3 @@
-// Final/src/pages/Relatorio.jsx
 import { useEffect, useState } from "react";
 import { getAeronaves, getAeronave } from "../services/aeronavesService";
 
@@ -35,7 +34,6 @@ export default function Relatorio() {
   }, [selected]);
 
   const handlePrint = () => {
-    // abre print do navegador (gera PDF)
     window.print();
   };
 
@@ -115,7 +113,6 @@ export default function Relatorio() {
         </div>
       </div>
 
-      {/* Estilos para impressão: escondemos a sidebar/header quando imprimir */}
       <style>{`
         @media print {
           body * { visibility: hidden; }

@@ -1,4 +1,3 @@
-// Final/src/services/testesService.js
 import API from "./api";
 
 export const getTestes = () => API.get("/testes").then(r => r.data);

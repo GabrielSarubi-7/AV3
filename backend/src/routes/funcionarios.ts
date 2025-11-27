@@ -1,41 +1,63 @@
+// src/routes/funcionarios.ts
 import { Router } from "express";
+import bcrypt from "bcrypt";
 import prisma from "../prismaClient";
+import { ensureAuth, ensurePermission } from "../middleware/auth";
+
 const router = Router();
 
-router.get("/", async (req, res) => {
+// lista (qualquer usuário autenticado pode ver; se quiser público, remova ensureAuth)
+router.get("/", ensureAuth, async (req, res) => {
   try {
     const items = await prisma.funcionario.findMany({ orderBy: { id: "desc" }});
-    res.json(items);
+    // não retornar senha
+    const safe = items.map(({ senha, ...rest }) => rest);
+    res.json(safe);
   } catch (e) { console.error(e); res.status(500).json({ error: "Erro ao listar funcionários" }); }
 });
 
-router.post("/", async (req, res) => {
+// criar -> apenas ADMINISTRADOR
+router.post("/", ensureAuth, ensurePermission("ADMINISTRADOR"), async (req, res) => {
   try {
     const { nome, telefone, endereco, usuario, senha, permissao } = req.body;
-    const created = await prisma.funcionario.create({ data: { nome, telefone, endereco, usuario, senha, permissao }});
-    res.status(201).json(created);
+    if(!nome || !usuario || !senha || !permissao) return res.status(400).json({ error: "Campos obrigatórios faltando" });
+
+    const hash = await bcrypt.hash(senha, 10);
+    const created = await prisma.funcionario.create({
+      data: { nome, telefone, endereco, usuario, senha: hash, permissao }
+    });
+    const { senha: _s, ...userSafe } = created;
+    res.status(201).json(userSafe);
   } catch (e) { console.error(e); res.status(500).json({ error: "Erro ao criar funcionário" }); }
 });
 
-router.get("/:id", async (req, res) => {
+// buscar por id
+router.get("/:id", ensureAuth, async (req, res) => {
   const id = Number(req.params.id);
   try {
     const item = await prisma.funcionario.findUnique({ where: { id }});
     if (!item) return res.status(404).json({ error: "Funcionário não encontrado" });
-    res.json(item);
+    const { senha: _s, ...userSafe } = item;
+    res.json(userSafe);
   } catch (e) { console.error(e); res.status(500).json({ error: "Erro ao buscar funcionário" }); }
 });
 
-router.put("/:id", async (req, res) => {
+// atualizar -> somente ADMINISTRADOR
+router.put("/:id", ensureAuth, ensurePermission("ADMINISTRADOR"), async (req, res) => {
   const id = Number(req.params.id);
   try {
-    const data = req.body;
+    const data = { ...req.body };
+    if (data.senha) {
+      data.senha = await bcrypt.hash(data.senha, 10);
+    }
     const updated = await prisma.funcionario.update({ where: { id }, data });
-    res.json(updated);
+    const { senha: _s, ...userSafe } = updated;
+    res.json(userSafe);
   } catch (e) { console.error(e); res.status(500).json({ error: "Erro ao atualizar funcionário" }); }
 });
 
-router.delete("/:id", async (req, res) => {
+// deletar -> somente ADMINISTRADOR
+router.delete("/:id", ensureAuth, ensurePermission("ADMINISTRADOR"), async (req, res) => {
   const id = Number(req.params.id);
   try {
     await prisma.funcionario.delete({ where: { id }});

@@ -1,17 +1,18 @@
-// Final/src/pages/Pecas.jsx
 import { useEffect, useState } from "react";
 import Modal from "../components/Modal.jsx";
 import { getPecas, createPeca, deletePeca } from "../services/pecasService";
 import { getAeronaves } from "../services/aeronavesService";
+import useAuth from "../hooks/useAuth";
 
 export default function Pecas(){
+  const { me, canCreatePecas, canDelete } = useAuth();
+
   const [open,setOpen] = useState(false);
   const [pecas,setPecas] = useState([]);
   const [aeronaves,setAeronaves] = useState([]);
   const [loading,setLoading] = useState(false);
   const [saving,setSaving] = useState(false);
 
-  // form fields
   const [aeronaveId,setAeronaveId] = useState("");
   const [nome,setNome] = useState("");
   const [tipo,setTipo] = useState("NACIONAL");
@@ -34,6 +35,7 @@ export default function Pecas(){
 
   const handleCreate = async (e) =>{
     e.preventDefault();
+    if(!canCreatePecas){ alert("Você não tem permissão para criar peças."); return; }
     setSaving(true);
     try{
       const payload = {
@@ -53,14 +55,24 @@ export default function Pecas(){
   };
 
   const handleDelete = async (id) => {
+    if(!canDelete){ alert("Você não tem permissão para excluir."); return; }
     if(!confirm("Deseja excluir?")) return;
     try{ await deletePeca(id); await load(); }catch(err){ console.error(err); alert("Erro ao excluir."); }
   };
 
   return (
     <div className="grid">
-      <button className="btn" onClick={()=>setOpen(true)}>+ Nova Peça</button>
+      {canCreatePecas ? (
+        <button className="btn" onClick={()=>setOpen(true)}>+ Nova Peça</button>
+      ) : (
+        <button className="btn" disabled style={{opacity:0.6}}>+ Nova Peça</button>
+      )}
+
       <button className="btn" onClick={load} style={{marginLeft:8}}>Atualizar</button>
+
+      {!canCreatePecas && (
+        <div style={{marginTop:8, color:"#c9d1d9"}}>Você não tem permissão para criar peças.</div>
+      )}
 
       <div style={{marginTop:12}}>
         {loading ? <div>Carregando...</div> : (
@@ -76,7 +88,11 @@ export default function Pecas(){
                     <td>{aeronaves.find(a=>a.id===p.aeronaveId)?.codigo ?? p.aeronaveId}</td>
                     <td>{p.status}</td>
                     <td style={{display:"flex",gap:8,justifyContent:"flex-end"}}>
-                      <button className="btn" onClick={()=>handleDelete(p.id)}>Excluir</button>
+                      {canDelete ? (
+                        <button className="btn" onClick={()=>handleDelete(p.id)}>Excluir</button>
+                      ) : (
+                        <button className="btn" disabled style={{opacity:0.6}}>Excluir</button>
+                      )}
                     </td>
                   </tr>
                 ))}

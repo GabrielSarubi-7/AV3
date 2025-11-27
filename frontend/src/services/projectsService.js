@@ -1,4 +1,3 @@
-// src/services/projectsService.js
 import API from "./api";
 
 export const getProjects = () => API.get("/projects").then(r => r.data);

@@ -1,106 +1,130 @@
-# AEROCODE – Sistema de Gerenciamento de Aeronaves
 
-Este projeto faz parte da **AV3** e implementa um sistema completo para controle de processos aeronáuticos, incluindo gerenciamento de **Aeronaves**, **Peças**, **Etapas**, **Testes** e **Funcionários**, com integração total entre **frontend React**, **backend Node/Express** e **banco de dados MySQL usando Prisma ORM**.
+# Aerocode — Sistema de Gestão de Aeronaves
 
----
-
-## Tecnologias Utilizadas
-
-### **Backend**
-- Node.js  
-- Express  
-- Prisma ORM  
-- MySQL  
-- TypeScript  
-
-### **Frontend**
-- React.js  
-- Vite  
-- Axios  
-- React Router
+Sistema **Full Stack** para gestão de **aeronaves, peças, etapas e testes**, com **controle de permissões por perfil** (ADMIN, ENGENHEIRO, OPERADOR) e **relatórios por aeronave**.
 
 ---
 
-## Estrutura do Projeto
-```
-/aerocode-backend
-├── src/
-│   ├── routes/
-│   ├── prisma/
-│   ├── server.ts
-├── prisma/
-│   ├── schema.prisma
+## Requisitos
 
-/Final (Frontend)
-├── src/
-│   ├── pages/
-│   ├── components/
-│   ├── services/
-├── index.html
-├── vite.config.js
+- Node.js 16+
+- NPM
+- MySQL 5.7+ ou 8+
+- Git
+
+---
+
+## Instalação
+
+```bash
+git clone https://github.com/GabrielSarubi-7/AV3
+cd AV3
 ```
 
----
+### Backend
 
-## BACKEND (aerocode-backend)
-
-### 1. Acessar a pasta do backend
-
-cd aerocode-backend
-
-### 2. Instalar dependências
-
+```bash
+cd backend
 npm install
-
-### 3. Criar arquivo `.env`
-
-Crie um arquivo chamado `.env` dentro da pasta `aerocode-backend` com o conteúdo:
 ```
-DATABASE_URL="mysql://user:senha@localhost:3306/aerocode"
+
+Crie o arquivo `.env` em `backend/.env`:
+
+```env
+DATABASE_URL="mysql://USER:SENHA@localhost:3306/aerocode"
 PORT=4000
+JWT_SECRET="senhasupersecreta"
 ```
-Substitua `user` e `senha` pelo seu usuário e senha do MySQL.
 
-### 4. Rodar as migrações do Prisma
+Aplique as migrações:
 
+```bash
 npx prisma migrate dev --name init
+```
 
-### 5. Iniciar o servidor backend
+Crie o usuário ADMIN padrão:
 
+```bash
+node scripts/createAdmin.js
+```
+
+Inicie o servidor:
+
+```bash
 npm run dev
+```
 
-O backend ficará disponível em: http://localhost:4000
+### Frontend
 
----
-
-## FRONTEND (Final)
-
-### 1. Acessar a pasta do frontend
-
-cd ../Final
-
-### 2. Instalar dependências
-
+```bash
+cd ../frontend
 npm install
+```
 
-### 3. Criar arquivo `.env` do frontend
+Crie o arquivo `.env` em `frontend/.env`:
 
-Crie o arquivo `.env` dentro da pasta `Final` com:
-
+```env
 VITE_API_URL="http://localhost:4000/api"
+```
 
-### 4. Iniciar o servidor React
+Inicie o frontend:
 
+```bash
 npm run dev
+```
 
-O frontend ficará disponível em: http://localhost:5173
+Acesse: http://localhost:5173
 
 ---
 
-##  Fluxo de Execução Completo
+## Login padrão
 
-1. Inicie o MySQL  
-2. Rode o backend (porta 4000)  
-3. Rode o frontend (porta 5173)  
-4. Abra o navegador em http://localhost:5173  
-5. Utilize todas as funcionalidades do sistema normalmente
+| Campo   | Valor     |
+| ------- | --------- |
+| Usuário | `admin`   |
+| Senha   | `admin123`|
+
+---
+
+## Perfis e Permissões
+
+- **ADMIN**
+  - Acesso total ao sistema
+  - CRUD completo
+  - Gerencia funcionários
+
+- **ENGENHEIRO**
+  - Lista tudo
+  - Cria peças, etapas e testes
+  - Não gerencia funcionários
+
+- **OPERADOR**
+  - Apenas visualiza aeronaves, peças, etapas e testes
+  - Não cria nem exclui registros
+
+---
+
+## Funcionalidades
+
+- CRUD de **aeronaves**
+- CRUD de **peças**
+- CRUD de **etapas**
+- CRUD de **testes**
+- **Relatório completo por aeronave**
+- Sistema de **permissões por perfil**
+- **Travas visuais** (botões ocultos/desabilitados e páginas protegidas)
+
+---
+
+## Como testar
+
+1. Logar como **admin**
+2. Criar um usuário **ENGENHEIRO** e um **OPERADOR**
+3. Relogar com cada perfil e validar:
+   - O que cada um consegue ver
+   - O que consegue criar/editar/excluir
+4. Gerar/visualizar relatórios por aeronave
+
+---
+
+> Para mais detalhes, consulte o arquivo `manual_do_usuario.md`.

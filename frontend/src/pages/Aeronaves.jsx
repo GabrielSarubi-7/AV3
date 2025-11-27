@@ -1,15 +1,16 @@
-// Final/src/pages/Aeronaves.jsx
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Modal from "../components/Modal.jsx";
 import { getAeronaves, createAeronave, deleteAeronave } from "../services/aeronavesService";
+import useAuth from "../hooks/useAuth";
 
 export default function Aeronaves() {
+  const { me, canCreateAeronaves, canDelete } = useAuth();
+
   const [open, setOpen] = useState(false);
   const [aeronaves, setAeronaves] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // form fields
   const [codigo, setCodigo] = useState("");
   const [modelo, setModelo] = useState("");
   const [tipo, setTipo] = useState("COMERCIAL");
@@ -39,6 +40,7 @@ export default function Aeronaves() {
 
   const handleCreate = async (e) => {
     e.preventDefault();
+    if(!canCreateAeronaves){ alert("Você não tem permissão para criar aeronaves."); return; }
     setSaving(true);
     try {
       const payload = {
@@ -60,6 +62,7 @@ export default function Aeronaves() {
   };
 
   const handleDelete = async (id) => {
+    if(!canDelete){ alert("Você não tem permissão para excluir aeronaves."); return; }
     if (!confirm("Deseja realmente excluir este registro?")) return;
     try {
       await deleteAeronave(id);
@@ -72,8 +75,17 @@ export default function Aeronaves() {
 
   return (
     <div className="grid">
-      <button className="btn" onClick={handleOpenNew}>+ Nova Aeronave</button>
+      {canCreateAeronaves ? (
+        <button className="btn" onClick={handleOpenNew}>+ Nova Aeronave</button>
+      ) : (
+        <button className="btn" disabled style={{opacity:0.6}}>+ Nova Aeronave</button>
+      )}
+
       <button className="btn" onClick={load} style={{ marginLeft: 8 }}>Atualizar</button>
+
+      {!canCreateAeronaves && (
+        <div style={{marginTop:8, color:"#c9d1d9"}}>Você não tem permissão para criar aeronaves.</div>
+      )}
 
       <div style={{ marginTop: 12 }}>
         {loading ? (
@@ -94,7 +106,11 @@ export default function Aeronaves() {
                     <td>{a.tipo}</td>
                     <td style={{display:"flex", gap:8, justifyContent:"flex-end"}}>
                       <Link to={`/aeronaves/${a.id}`} className="btn small">Detalhes</Link>
-                      <button className="btn" onClick={() => handleDelete(a.id)}>Excluir</button>
+                      {canDelete ? (
+                        <button className="btn" onClick={() => handleDelete(a.id)}>Excluir</button>
+                      ) : (
+                        <button className="btn" disabled style={{opacity:0.6}}>Excluir</button>
+                      )}
                     </td>
                   </tr>
                 ))}

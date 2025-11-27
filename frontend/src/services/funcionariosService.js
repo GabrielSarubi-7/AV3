@@ -1,4 +1,3 @@
-// Final/src/services/funcionariosService.js
 import API from "./api";
 
 export const getFuncionarios = () => API.get("/funcionarios").then(r => r.data);

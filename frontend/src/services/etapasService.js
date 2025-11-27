@@ -1,4 +1,3 @@
-// Final/src/services/etapasService.js
 import API from "./api";
 
 export const getEtapas = () => API.get("/etapas").then(r => r.data);

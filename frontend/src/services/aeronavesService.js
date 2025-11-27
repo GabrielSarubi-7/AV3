@@ -1,4 +1,3 @@
-// Final/src/services/aeronavesService.js
 import API from "./api";
 
 export const getAeronaves = () => API.get("/aeronaves").then(r => r.data);

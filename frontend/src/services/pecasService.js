@@ -1,4 +1,3 @@
-// Final/src/services/pecasService.js
 import API from "./api";
 
 export const getPecas = () => API.get("/pecas").then(r => r.data);
