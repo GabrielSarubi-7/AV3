@@ -11,8 +11,8 @@
     "jsx": "react-jsx"
   },
   "include": [
-    "aerocode-backend/src/**/*",
-    "Final/src/**/*",
+    "backend/src/**/*",
+    "frontend/src/**/*",
     "prisma/**/*",
     "*.ts",
     "*.js"
